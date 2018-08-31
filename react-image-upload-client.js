@@ -13,7 +13,6 @@ export default class App extends Component {
   }
 
   onChange = e => {
-    const errs = [] 
     const files = Array.from(e.target.files)
     this.setState({ uploading: true })
 
@@ -43,7 +42,7 @@ export default class App extends Component {
   }
   
   render() {
-    const { uploading, images, loading } = this.state
+    const { uploading, images } = this.state
 
     const content = () => {
       switch(true) {
