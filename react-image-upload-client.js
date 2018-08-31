@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { 
-  faImage, faImages, faTimesCircle, faSpinner 
-} from '@fortawesome/free-solid-svg-icons'
+import Spinner from './Spinner'
+import Images from './Images'
+import Buttons from './Buttons'
 import { API_URL } from './config'
 import './App.css'
 
@@ -14,9 +13,11 @@ export default class App extends Component {
   }
 
   onChange = e => {
+    const errs = [] 
     const files = Array.from(e.target.files)
-    const formData = new FormData()
     this.setState({ uploading: true })
+
+    const formData = new FormData()
 
     files.forEach((file, i) => {
       formData.append(i, file)
@@ -42,52 +43,16 @@ export default class App extends Component {
   }
   
   render() {
-    const { uploading, images } = this.state
-
-    const spinner = (
-      <div className='spinner fadein'>
-        <FontAwesomeIcon icon={faSpinner} size='5x' color='#3B5998' />
-      </div>
-    )
-
-    const displayImages = images.map(image => {
-      const id = image.public_id
-      return (
-        <div key={id} className='fadein'>
-          <div onClick={() => this.removeImage(id)} className='delete'>
-            <FontAwesomeIcon icon={faTimesCircle} size='2x' />
-          </div>
-          <img src={image.secure_url} alt='' />
-        </div>
-      )
-    })    
-
-    const buttons = (
-      <div className='buttons fadein'>
-        <div className='button'>
-          <label htmlFor='single'>
-            <FontAwesomeIcon icon={faImage} color='#3B5998' size='10x' />
-          </label>
-          <input type='file' id='single' onChange={this.onChange} /> 
-        </div>
-        
-        <div className='button'>
-          <label htmlFor='multi'>
-            <FontAwesomeIcon icon={faImages} color='#6d84b4' size='10x' />
-          </label>
-          <input type='file' id='multi' onChange={this.onChange} multiple />
-        </div>
-      </div>
-    )
+    const { uploading, images, loading } = this.state
 
     const content = () => {
       switch(true) {
         case uploading:
-          return spinner
+          return <Spinner />
         case images.length > 0:
-          return displayImages
+          return <Images images={images} removeImage={this.removeImage} />
         default:
-          return buttons
+          return <Buttons onChange={this.onChange} />
       }
     }
 
