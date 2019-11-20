@@ -5,7 +5,7 @@ var app 		     = express();
 
 var router = express.Router();
  
-app.use(subdomain('api', router));
+app.use(subdomain('api.vendlyz', router));
 
 app.get('/', function (req, res) {
   res.send('Hello World!');
